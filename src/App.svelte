@@ -5,6 +5,14 @@
 	let items = []
 	let query = ''
 	let page = 0
+
+	let type = ''
+	const types = [
+		"PO Hood",
+		"T-Shirt",
+		"Jean",
+		"Polo",
+	]
 </script>
 
 <svelte:head>
@@ -12,15 +20,37 @@
 </svelte:head>
 
 <main class="dark">
-	<input 
+	<input
+		class="search" 
 		placeholder="Search Items"
 		bind:value={query}
 		on:change={async() => {
 				page = 1
-				items = await Search(query, page)
+				items = await Search(query+' '+type, page)
 		}}
 	/>
 	
+	<div>
+		<label for="Any" class="type" style={type == '' && "outline: solid 2px pink;"}> Any
+			<input type="radio" name="type" id="Any" on:change={() => type = ''}>
+		</label>
+		{#each types as t}
+			<label 
+				for={t} 
+				class="type"
+				style={type == t && "outline: solid 2px pink;"}
+			>
+				{t}
+				<input
+					type="radio"
+					name="type"
+					id={t}
+					on:change={() => type = t}
+				>
+			</label>
+		{/each}
+	</div>
+
 	<div class="container">
 		{#each items as item}
 			<a href={item.url} class="item">
@@ -40,7 +70,7 @@
 		on:loadMore={async() => {
 			items = [
 				...items, 
-				...(await Search(query,(++page)))
+				...(await Search(query+' '+type,(++page)))
 			]
 		}} 
 		threshold={150} 
@@ -55,9 +85,22 @@
 		margin: 0 auto 0 auto;
 	}
 
-	input {
+	.search {
 		width: 100%;
-		font-size: x-large
+		font-size: x-large;
+		margin-bottom: 10px;
+	}
+
+	.type {
+		font-size: large;
+		background-color: grey;
+		padding: 2px 4px 2px 4px;
+		margin: 0 5px 0 5px;
+		border-radius: 5px;
+		text-align: center;
+		&> input {
+			display: none;
+		}
 	}
 	
 	.container {
