@@ -3,7 +3,7 @@ export const Search = async (query,page) => {
 		// Required fields
 		'currencyCode': 'AUD',
 		'storeId': 1,
-		'searchCriteria[pageSize]': 15,
+		'searchCriteria[pageSize]': 20,
 		'searchCriteria[currentPage]': page,
 		// Filter to return useful stuff
 		'fields': 'items[url,name,id,price_info[final_price,regular_price],images[url]]',

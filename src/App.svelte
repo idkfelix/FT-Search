@@ -10,8 +10,14 @@
 	const types = [
 		"PO Hood",
 		"T-Shirt",
-		"Jean",
-		"Polo",
+    "Crew",
+    "Knit",
+    "Jersey",
+    "Polo",
+    "Jean",
+		"Pant",
+    "Short",
+    "Deck",
 	]
 </script>
 
@@ -20,25 +26,35 @@
 </svelte:head>
 
 <main class="dark">
+  <h1>
+    Fast Times Search
+  </h1>
+
 	<input
 		class="search" 
 		placeholder="Search Items"
 		bind:value={query}
-		on:change={async() => {
-				page = 1
-				items = await Search(query+' '+type, page)
-		}}
+    on:change={async() => {
+      page = 1
+      items = await Search(query+' '+type, page)
+    }}
+    on:keydown={async(e) => {
+      if(e.key == "Enter"){
+        page = 1
+        items = await Search(query+' '+type, page)
+      }
+    }}
 	/>
 	
 	<div>
-		<label for="Any" class="type" style={type == '' && "outline: solid 2px pink;"}> Any
+		<label for="Any" class="type" style={type == '' && "outline: solid 2px white;"}> Any
 			<input type="radio" name="type" id="Any" on:change={() => type = ''}>
 		</label>
 		{#each types as t}
 			<label 
 				for={t} 
 				class="type"
-				style={type == t && "outline: solid 2px pink;"}
+				style={type == t && "outline: solid 2px white;"}
 			>
 				{t}
 				<input
@@ -78,7 +94,13 @@
 	/>
 </main>
 
-<style>	
+<style>
+  h1 {
+    font-size: 50px;
+    text-align: center;
+    margin: 15px 0 15px 0;
+  }
+
 	main {
 		padding: 20px;
 		max-width: 900px;
@@ -94,10 +116,13 @@
 	.type {
 		font-size: large;
 		background-color: grey;
-		padding: 2px 4px 2px 4px;
-		margin: 0 5px 0 5px;
-		border-radius: 5px;
+		padding: 2px 10px 2px 10px;
+		margin: 5px 5px 8px 5px;
+		border-radius: 3px;
 		text-align: center;
+    display: inline-flex;
+    align-content: center;
+    justify-content: center;
 		&> input {
 			display: none;
 		}
