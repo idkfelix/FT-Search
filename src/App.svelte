@@ -1,5 +1,6 @@
 <script>
-    import InfiniteScroll from "svelte-infinite-scroll";
+  import Item from './Item.svelte';
+  import InfiniteScroll from "svelte-infinite-scroll";
 	import {Search} from './Search.js'
 	
 	let items = []
@@ -21,15 +22,12 @@
 	]
 </script>
 
-<svelte:head>
-	<title>FT Search</title>
-</svelte:head>
-
 <main class="dark">
   <h1>
     Fast Times Search
   </h1>
 
+  <!-- Search Bar -->
 	<input
 		class="search" 
 		placeholder="Search Items"
@@ -46,6 +44,7 @@
     }}
 	/>
 	
+  <!-- Common Filters -->
 	<div>
 		<label for="Any" class="type" style={type == '' && "outline: solid 2px white;"}> Any
 			<input type="radio" name="type" id="Any" on:change={() => type = ''}>
@@ -67,21 +66,14 @@
 		{/each}
 	</div>
 
+  <!-- Items -->
 	<div class="container">
 		{#each items as item}
-			<a href={item.url} class="item">
-				<img src={item.images[0].url} alt=""/>
-				<p>{item.name}</p>
-				<p>
-					${item.price_info.final_price}
-					{#if item.price_info.final_price != item.price_info.regular_price}
-						<strike>${item.price_info.regular_price}</strike>
-					{/if}
-				</p>
-			</a>
+      <Item bind:item></Item>
 		{/each}
 	</div>
 	
+  <!-- Auto Load Items -->
 	<InfiniteScroll 
 		on:loadMore={async() => {
 			items = [
@@ -134,14 +126,5 @@
 		justify-content: center;
 		flex-wrap: wrap;
 		gap: 20px;
-	}
-	
-	.item {
-		flex: 0 0 200px;
-		color: white;
-		text-decoration: none;
-		&> img {
-			width: 100%;
-		}
 	}
 </style>
