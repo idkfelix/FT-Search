@@ -1,78 +1,54 @@
-import { spawn } from 'child_process';
-import svelte from 'rollup-plugin-svelte';
-import commonjs from '@rollup/plugin-commonjs';
-import terser from '@rollup/plugin-terser';
-import resolve from '@rollup/plugin-node-resolve';
-import livereload from 'rollup-plugin-livereload';
+import resolve from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
+import terser from "@rollup/plugin-terser";
+import svelte from "rollup-plugin-svelte";
 import css from 'rollup-plugin-css-only';
+import zip from "rollup-plugin-zip";
+import del from 'rollup-plugin-delete'
+
+import {chromeExtension, simpleReloader} from "rollup-plugin-chrome-extension";
 
 const production = !process.env.ROLLUP_WATCH;
 
-function serve() {
-	let server;
-
-	function toExit() {
-		if (server) server.kill(0);
-	}
-
-	return {
-		writeBundle() {
-			if (server) return;
-			server = spawn('npm', ['run', 'start', '--', '--dev'], {
-				stdio: ['ignore', 'inherit', 'inherit'],
-				shell: true
-			});
-
-			process.on('SIGTERM', toExit);
-			process.on('exit', toExit);
-		}
-	};
-}
-
 export default {
-	input: 'src/main.js',
-	output: {
-		sourcemap: true,
-		format: 'iife',
-		name: 'app',
-		file: 'public/build/bundle.js'
-	},
-	plugins: [
-		svelte({
-			compilerOptions: {
-				// enable run-time checks when not in production
-				dev: !production
-			}
-		}),
-		// we'll extract any component CSS out into
-		// a separate file - better for performance
-		css({ output: 'bundle.css' }),
+  input: "src/manifest.json",
+  output: {
+    dir: "dist",
+    format: "esm",
+  },
+  plugins: [
+    // Chrome Extention Stuff
+    chromeExtension({
+      
+    }),
+    simpleReloader(),
 
-		// If you have external dependencies installed from
-		// npm, you'll most likely need these plugins. In
-		// some cases you'll need additional configuration -
-		// consult the documentation for details:
-		// https://github.com/rollup/plugins/tree/master/packages/commonjs
-		resolve({
-			browser: true,
-			dedupe: ['svelte'],
-			exportConditions: ['svelte']
-		}),
-		commonjs(),
+    // Svelte Pre-Process
+    svelte({
+      compilerOptions: {
+        // enable run-time checks when not in production
+        dev: !production,
+      },
+    }),
 
-		// In dev mode, call `npm run start` once
-		// the bundle has been generated
-		!production && serve(),
+    // Abstract CSS to its own file
+    css({ output: 'bundle.css' }),
 
-		// Watch the `public` directory and refresh the
-		// browser on changes when not in production
-		!production && livereload('public'),
+    // Clean dist folder before bundeling
+    del({ targets: 'dist/*' }),
 
-		// If we're building for production (npm run build
-		// instead of npm run dev), minify
-		production && terser()
-	],
-	watch: {
-		clearScreen: false
-	}
+    // Node_Modules Stuff
+    resolve({
+      dedupe: ["svelte"],
+    }),
+
+    // Convert CommmonJS to ES6
+    commonjs(),
+
+    // If we're building for production, minify
+    production && terser(),
+
+    // Outputs a zip file in ./releases
+    production && zip({ dir: "releases" }),
+  ],
 };

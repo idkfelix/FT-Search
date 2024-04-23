@@ -1,5 +1,5 @@
 export const GetSKUs = async (url) => {
-  let res = await fetch('https://cors-anywhere.herokuapp.com/' + url)
+  let res = await fetch(url)
     .then(r => r.text())
 
   const r =  /(?<=<script[^>]*>)([\s\S]*?)(?=<\/script>)/g

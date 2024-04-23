@@ -26,7 +26,7 @@ export const Search = async (query,page) => {
 	if(query === '') return []
 	
 	// Fetch items with constructed query and get JSON data
-	let res = await fetch('https://corsproxy.io/?' + encodeURIComponent(url))
+	let res = await fetch(url)
 		.then(r => r.json())
 	
 	// Return results, empty if no results

@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "action": {
+       "default_title": "Click to open panel",
+       "default_popup" : "index.html"
+    },
+    "background": {
+       "service_worker": "background/index.js"
+    },
+    "side_panel": {
+        "default_path": "index.html"
+    },
+    "permissions": [
+        "sidePanel"
+    ]
+}

@@ -1,7 +1,7 @@
 <script>
-  import Item from './Item.svelte';
   import InfiniteScroll from "svelte-infinite-scroll";
-	import {Search} from './Search.js'
+	import {Search} from './lib/Search.js'
+  import Item from './lib/Item.svelte';
 	
 	let items = []
 	let query = ''
