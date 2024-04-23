@@ -24,7 +24,7 @@
       style="float: right"
       on:click={async() => {item.skus = await GetSKUs(item.url)}}
     >
-      Get SKU
+      Get SKUs
     </button>
   </span>
 
@@ -58,9 +58,14 @@
   .skus {
     display: flex;
     flex-direction: column;
+    min-width: 100%;
     &> button {
       margin-top: 5px;
     }
+  }
+
+  .sku {
+    min-width: 100%;
   }
 </style>
 
