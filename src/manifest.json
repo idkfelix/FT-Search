@@ -1,12 +1,17 @@
 {
   "manifest_version": 3,
-  "devtools_page": "index.html",
+  "background": {
+    "service_worker": "sw.js"
+  },
+  "action": {
+    "default_title": "Open Search"
+  },
   "side_panel": {
-    "default_path": "index.html",
-    "openPanelOnActionClick": true
+    "default_path": "index.html"
   },
   "permissions": [
     "sidePanel"
   ],
+  "devtools_page": "index.html",
   "host_permissions": ["http://*/*","https://*/*"]
 }
