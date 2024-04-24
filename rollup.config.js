@@ -33,7 +33,7 @@ export default {
 
     production && terser(),
     production && zip({
-      file: `${npm_package_name}-${npm_package_version}.crx`
+      file: `${npm_package_name}-${npm_package_version}.zip`
     }),
   ],
 }
