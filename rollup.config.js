@@ -9,6 +9,11 @@ import {chromeExtension} from "rollup-plugin-chrome-extension"
 
 const production = !process.env.ROLLUP_WATCH
 
+const {
+  npm_package_name,
+  npm_package_version
+ } = process.env
+
 export default {
   input: "src/manifest.json",
   output: {
@@ -23,10 +28,12 @@ export default {
 
     del({ targets: 'dist/*' }),
 
-    resolve({ dedupe: ["svelte"] }),
+    resolve(),
     commonjs(),
 
     production && terser(),
-    production && zip({ dir: "release" })
+    production && zip({
+      file: `${npm_package_name}-${npm_package_version}.crx`
+    }),
   ],
 }

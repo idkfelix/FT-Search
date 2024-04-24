@@ -20,6 +20,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: release/*.zip
+          files: dist/*.crx
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
