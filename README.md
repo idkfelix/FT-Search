@@ -13,4 +13,5 @@
 - Select relevant product filter if applicable
 - Enter your query in the seach bar and press Enter
 - Click "Get SKUs" to fetch the products SKU codes
+- Press any SKU button to copy its value to the clipboard
 - Click the product to view on the Fast Times website
